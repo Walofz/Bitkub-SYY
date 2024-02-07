@@ -50,7 +50,7 @@ def send_buy_order(rate, ordersize):
         j = json_encode(data)
         h = hmac.new(API_SECRET, msg=j.encode(), digestmod=hashlib.sha256)
         return h.hexdigest()
-    response = requests.get(API_HOST + '/api/servertime')
+    response = requests.get(API_HOST + '/api/v3/servertime')
     servertime = int(response.text)
     header = {
         'Accept': 'application/json',
@@ -66,7 +66,7 @@ def send_buy_order(rate, ordersize):
     }
     signature = sign(data)
     data['sig'] = signature
-    response = requests.post(API_HOST + '/api/market/place-bid', headers=header, data=json_encode(data))
+    response = requests.post(API_HOST + '/api/v3/market/place-bid', headers=header, data=json_encode(data))
     ex_response=json.loads(response.text)
     if ex_response['error']==0:
         temp(ex_response['result']['hash'])
@@ -86,7 +86,7 @@ def send_sell_order(rate,amt):
         j = json_encode(data)
         h = hmac.new(API_SECRET, msg=j.encode(), digestmod=hashlib.sha256)
         return h.hexdigest()
-    response = requests.get(API_HOST + '/api/servertime')
+    response = requests.get(API_HOST + '/api/v3/servertime')
     servertime = int(response.text)
     header = {
         'Accept': 'application/json',
@@ -102,7 +102,7 @@ def send_sell_order(rate,amt):
     }
     signature = sign(data)
     data['sig'] = signature
-    response = requests.post(API_HOST + '/api/market/place-ask', headers=header, data=json_encode(data))
+    response = requests.post(API_HOST + '/api/v3/market/place-ask', headers=header, data=json_encode(data))
     ex_response=json.loads(response.text)
     if ex_response['error']==0:
         temp(ex_response['result']['hash'])
@@ -122,7 +122,7 @@ def send_sell_order_clear(rate,amt):
         j = json_encode(data)
         h = hmac.new(API_SECRET, msg=j.encode(), digestmod=hashlib.sha256)
         return h.hexdigest()
-    response = requests.get(API_HOST + '/api/servertime')
+    response = requests.get(API_HOST + '/api/v3/servertime')
     servertime = int(response.text)
     header = {
         'Accept': 'application/json',
@@ -138,7 +138,7 @@ def send_sell_order_clear(rate,amt):
     }
     signature = sign(data)
     data['sig'] = signature
-    response = requests.post(API_HOST + '/api/market/place-ask', headers=header, data=json_encode(data))
+    response = requests.post(API_HOST + '/api/v3/market/place-ask', headers=header, data=json_encode(data))
     ex_response=json.loads(response.text)
     if ex_response['error']==0:
         temp(ex_response['result']['hash'])
@@ -170,7 +170,7 @@ def order_info():
         j = json_encode(data)
         h = hmac.new(API_SECRET, msg=j.encode(), digestmod=hashlib.sha256)
         return h.hexdigest()
-    response = requests.get(API_HOST + '/api/servertime')
+    response = requests.get(API_HOST + '/api/v3/servertime')
     servertime = int(response.text)
     header = {
         'Accept': 'application/json',
@@ -183,7 +183,7 @@ def order_info():
     }
     signature = sign(data)
     data['sig'] = signature
-    response = requests.post(API_HOST + '/api/market/order-info', headers=header, data=json_encode(data))
+    response = requests.post(API_HOST + '/api/v3/market/order-info', headers=header, data=json_encode(data))
     order_info_res=json.loads(response.text)
     if order_info_res['error']!=0:
         savelog('Order info error : '+str(order_info_res['error']))
@@ -200,7 +200,7 @@ def my_history_by_taker(takercount):
         j = json_encode(data)
         h = hmac.new(API_SECRET, msg=j.encode(), digestmod=hashlib.sha256)
         return h.hexdigest()
-    response = requests.get(API_HOST + '/api/servertime')
+    response = requests.get(API_HOST + '/api/v3/servertime')
     servertime = int(response.text)
     header = {
         'Accept': 'application/json',
@@ -214,7 +214,7 @@ def my_history_by_taker(takercount):
     }
     signature = sign(data)
     data['sig'] = signature
-    response = requests.post(API_HOST + '/api/market/my-order-history', headers=header, data=json_encode(data))
+    response = requests.post(API_HOST + '/api/v3/market/my-order-history', headers=header, data=json_encode(data))
     new_order_history=json.loads(response.text)
     if new_order_history['error']!=0:
         savelog('My history by taker error : '+str(new_order_history['error']))
@@ -231,7 +231,7 @@ def cancel_order():
         j = json_encode(data)
         h = hmac.new(API_SECRET, msg=j.encode(), digestmod=hashlib.sha256)
         return h.hexdigest()
-    response = requests.get(API_HOST + '/api/servertime')
+    response = requests.get(API_HOST + '/api/v3/servertime')
     servertime = int(response.text)
     header = {
         'Accept': 'application/json',
@@ -246,7 +246,7 @@ def cancel_order():
             }
     signature = sign(data)
     data['sig'] = signature
-    response = requests.post(API_HOST + '/api/market/cancel-order', headers=header, data=json_encode(data))
+    response = requests.post(API_HOST + '/api/v3/market/cancel-order', headers=header, data=json_encode(data))
     ex_response=json.loads(response.text)
     if ex_response['error']==0:
         temp('')
@@ -262,7 +262,7 @@ def line(order_no,side,price,thb_amt,profit):
                 linesticker = random.choice(stickers_open)
                 headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+config['LINETOKEN']}                
                 msg = '\nออเดอร์ที่ : '+str(order_no)+'\nซื้อ : '+config['COIN']+'\nที่ราคา : '+str(price)+' บาท\nจำนวน : '+str(thb_amt)+' บาท'
-                s = requests.post('https://notify-api.line.me/api/notify', headers=headers, data = {"message":msg,"stickerPackageId":"1070","stickerId":linesticker})
+                s = requests.post('https://notify-api.line.me/api/v3/notify', headers=headers, data = {"message":msg,"stickerPackageId":"1070","stickerId":linesticker})
                 if s.status_code != 200:
                     savelog("line send error")
                     return 0
@@ -278,7 +278,7 @@ def line(order_no,side,price,thb_amt,profit):
                     msg = '\nขาย : '+config['COIN']+'\nออเดอร์ที่ : '+str(order_no)+'\nที่ราคา : '+str(price)+' บาท\nขาดทุน : '+str(abs(int(profit*10000)/10000))+' บาท'
                     linesticker = random.choice(stickers_loss)
                 headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+config['LINETOKEN']}
-                s= requests.post('https://notify-api.line.me/api/notify', headers=headers, data = {"message":msg,"stickerPackageId":"1070","stickerId":linesticker}) 
+                s= requests.post('https://notify-api.line.me/api/v3/notify', headers=headers, data = {"message":msg,"stickerPackageId":"1070","stickerId":linesticker}) 
                 if s.status_code != 200:
                     savelog("line send error")  
                     return 0 
@@ -296,7 +296,7 @@ def line_clear(ordercount, price):
             msg = '\nเคลียร์ออเดอร์ : '+config['COIN']+'\nจำนวนออเดอร์ : '+str(ordercount)+'\nที่ราคา : '+str(price)+' บาท'
             linesticker = random.choice(stickers_profit)
             headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+config['LINETOKEN']}
-            s= requests.post('https://notify-api.line.me/api/notify', headers=headers, data = {"message":msg,"stickerPackageId":"1070","stickerId":linesticker}) 
+            s= requests.post('https://notify-api.line.me/api/v3/notify', headers=headers, data = {"message":msg,"stickerPackageId":"1070","stickerId":linesticker}) 
             if s.status_code != 200:
                 savelog("line send error")
                 return 0 
