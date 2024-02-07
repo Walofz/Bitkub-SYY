@@ -5,8 +5,8 @@
     "LINE" : 0,
     "COIN" : "MATIC",
     "ORDERSIZE" : 100,
-    "MAX_ORDER" : 10,
-    "PRICERANGE" : 0.7,
+    "MAX_ORDER" : 12,
+    "PRICERANGE" : 1,
     "CLEAR_EVERY_BE" : 1,
     "CLEAR_ORDER_COUNT" : 2,
     "STOPNEXTCIRCLE" : 1
