@@ -3,10 +3,10 @@
     "SECRET" : "",
     "LINETOKEN" : "",
     "LINE" : 0,
-    "COIN" : "KUB",
+    "COIN" : "MATIC",
     "ORDERSIZE" : 100,
-    "MAX_ORDER" : 30,
-    "PRICERANGE" : 1,
+    "MAX_ORDER" : 10,
+    "PRICERANGE" : 0.7,
     "CLEAR_EVERY_BE" : 1,
     "CLEAR_ORDER_COUNT" : 2,
     "STOPNEXTCIRCLE" : 1
